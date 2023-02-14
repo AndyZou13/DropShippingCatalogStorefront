@@ -18,6 +18,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.util.Scanner;
+import java.util.ArrayList;
 /**
  *
  * @author student
@@ -39,12 +42,25 @@ public class Login extends HttpServlet {
         String password=(String) request.getParameter("password");
         
         UserInfo uinfo=getUserInfo(username, password);
+        File file = new File("/home/student/Documents/Lab2/src/main/webapp/resources/logins.txt");
+        Scanner sc = new Scanner(file);
+        String[] temp = new String[2];
+        ArrayList<String[]> userpass = new ArrayList<>();
+        String[] up = {username, password};
+        while (sc.hasNextLine()) {
+            temp = sc.nextLine().toLowerCase().split(" ");
+            userpass.add(temp);
+        }
         
         if (uinfo==null){
             RequestDispatcher rd= request.getRequestDispatcher("loginfailed.jsp");
             rd.forward(request, response);
         }
-        else{
+        else if (userpass.contains(up) == false) {
+            RequestDispatcher rd= request.getRequestDispatcher("loginfailed.jsp");
+            rd.forward(request, response);
+        }
+        else {
             request.getSession().setAttribute("uname", username);
             request.setAttribute("booksBorrowedInfo", uinfo.getCart());
             
@@ -54,12 +70,8 @@ public class Login extends HttpServlet {
         }
     }
     private UserInfo getUserInfo(String uname, String password) {
-        /**
-         * to be completed. For now, we just return a user info object that has a default book in a default date;
-         * This method must return null when user name and password is incorrect
-         * otherwise it must return an object containing all books that have been borrowed by the user, in addition to user information like name, address, ...
-         */
-        UserInfo uf= new UserInfo();
+        
+        UserInfo uf= new UserInfo(uname, password);
         
         return uf;
     }

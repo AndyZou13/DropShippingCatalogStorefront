@@ -66,7 +66,8 @@ public class Login extends HttpServlet {
             RequestDispatcher rd= request.getRequestDispatcher("searchPage.jsp");
             rd.forward(request, response);
         }else{
-            RequestDispatcher rd= request.getRequestDispatcher("loginFailed.jsp");
+            RequestDispatcher rd= request.getRequestDispatcher("index.html");
+            
             rd.forward(request, response);
         }
     }

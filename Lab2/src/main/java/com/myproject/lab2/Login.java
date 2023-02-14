@@ -5,11 +5,14 @@
  */
 package com.myproject.lab2;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -35,28 +38,41 @@ public class Login extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username=(String) request.getParameter("username");
-        String password=(String) request.getParameter("password");
         
-        UserInfo uinfo=getUserInfo(username, password);
+        String username = (String) request.getParameter("username");
+        String password = (String) request.getParameter("password");
         
-        if (uinfo==null){
-            RequestDispatcher rd= request.getRequestDispatcher("loginfailed.jsp");
-            rd.forward(request, response);
+        File file = new File("/home/student/Documents/Lab2/src/main/webapp/resources/logins.txt");
+        Scanner sc = new Scanner(file);
+        
+        boolean match = false;
+        while (sc.hasNextLine()) {
+            String[] temp = sc.nextLine().toLowerCase().split(" ");
+            
+            if(temp[0].equals(username) && temp[1].equals(password)){
+                match = true;
+                break;
+            }
         }
+        
+        if (match) {
+            // look up user info based on username and password
+            UserInfo uinfo = getUserInfo(username, password);
+            
             request.getSession().setAttribute("uname", username);
             request.setAttribute("booksBorrowedInfo", uinfo.getCart());
             request.setAttribute("cart", uinfo.getCart());
             
-            RequestDispatcher rd= request.getRequestDispatcher("userbooks.jsp");
             RequestDispatcher rd= request.getRequestDispatcher("searchPage.jsp");
             rd.forward(request, response);
-            
+        }else{
+            RequestDispatcher rd= request.getRequestDispatcher("loginFailed.jsp");
+            rd.forward(request, response);
         }
     }
-    private UserInfo getUserInfo(String uname, String password) {
-        
-        return uf;
+    private UserInfo getUserInfo(String username, String password) {
+        UserInfo userInfo = new UserInfo(username, password);
+        return userInfo;
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

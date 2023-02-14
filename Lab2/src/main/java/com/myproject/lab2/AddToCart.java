@@ -33,22 +33,6 @@ public class AddToCart extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String username=(String) request.getParameter("username");
-        String password=(String) request.getParameter("password");
-        
-        UserInfo uinfo = new UserInfo();
-        
-        if (uinfo==null){
-            RequestDispatcher rd= request.getRequestDispatcher("loginfailed.jsp");
-            rd.forward(request, response);
-        }
-        else{
-            request.getSession().setAttribute("uname", username);
-            request.setAttribute("cart", uinfo.getCart());
-            
-            RequestDispatcher rd= request.getRequestDispatcher("searchPage.jsp");
-            rd.forward(request, response);
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

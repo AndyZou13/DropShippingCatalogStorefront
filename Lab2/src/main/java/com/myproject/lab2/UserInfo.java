@@ -13,23 +13,11 @@ import java.util.ArrayList;
  */
 public class UserInfo {
     private ArrayList<Item> cart = new ArrayList<>();
-    private boolean isAdmin = false;
-    private String user;
-    private String pass;
-    public UserInfo (String uname, String pword) {
-        user = uname;
-        pass = pword;
-    }
     public void addItem(Item item) {
         cart.add(item);
     }
+    
     public ArrayList<Item> getCart() {
         return cart;
-    }
-    public boolean getAdmin() {
-        return isAdmin;
-    }
-    public void setAdmin(boolean ad) {
-        isAdmin = ad;
     }
 }

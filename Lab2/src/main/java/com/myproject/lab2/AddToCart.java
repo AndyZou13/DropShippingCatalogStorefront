@@ -7,22 +7,19 @@ package com.myproject.lab2;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 /**
  *
  * @author student
  */
-public class Login extends HttpServlet {
+@WebServlet(name = "AddToCart", urlPatterns = {"/AddToCart"})
+public class AddToCart extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,29 +32,25 @@ public class Login extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         String username=(String) request.getParameter("username");
         String password=(String) request.getParameter("password");
         
-        UserInfo uinfo=getUserInfo(username, password);
+        UserInfo uinfo = new UserInfo();
         
         if (uinfo==null){
             RequestDispatcher rd= request.getRequestDispatcher("loginfailed.jsp");
             rd.forward(request, response);
         }
+        else{
             request.getSession().setAttribute("uname", username);
-            request.setAttribute("booksBorrowedInfo", uinfo.getCart());
             request.setAttribute("cart", uinfo.getCart());
             
-            RequestDispatcher rd= request.getRequestDispatcher("userbooks.jsp");
             RequestDispatcher rd= request.getRequestDispatcher("searchPage.jsp");
             rd.forward(request, response);
-            
         }
     }
-    private UserInfo getUserInfo(String uname, String password) {
-        
-        return uf;
-    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -86,6 +79,15 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-// </editor-fold>
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
 
 }

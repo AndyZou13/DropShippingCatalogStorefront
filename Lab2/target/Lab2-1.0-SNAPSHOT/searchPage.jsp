@@ -12,13 +12,15 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Search Page</title>
     </head>
     
     <%
         ArrayList<Item> cart = (ArrayList)request.getAttribute("cart");
         ArrayList<Item> items = new ArrayList<Item>();
         items.add(new Item("testItem", "176839402934", "Canada", 15.0, 10, true));
+        items.add(new Item("testItem", "176839402934", "America", 15.0, 10, true));
+        items.add(new Item("testItem", "176839402934", "Mexico", 15.0, 10, true));
     %>
     
     <body>

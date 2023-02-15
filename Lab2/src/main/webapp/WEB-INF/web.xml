@@ -6,7 +6,7 @@
     </servlet>
     <servlet>
         <servlet-name>userInfo</servlet-name>
-        <servlet-class>com.myproject.lab2.UserInfo</servlet-class>
+        <servlet-class>com.myproject.lab2.userInfo</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>

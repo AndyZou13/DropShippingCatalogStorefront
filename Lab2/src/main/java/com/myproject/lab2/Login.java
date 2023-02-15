@@ -6,8 +6,10 @@
 package com.myproject.lab2;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.Integer.parseInt;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,20 +59,45 @@ public class Login extends HttpServlet {
         
         if (match) {
             // look up user info based on username and password
-            UserInfo uinfo = getUserInfo(username, password);
+            UserInfo userInfo = getUserInfo(username, password);
             
-            request.getSession().setAttribute("uname", username);
-            request.setAttribute("booksBorrowedInfo", uinfo.getCart());
-            request.setAttribute("cart", uinfo.getCart());
+            request.getSession().setAttribute("username", username);
+            request.setAttribute("cart", userInfo.getCart());
+            
+            // load items from storage
+            ArrayList<Item> items = retrieveItems();
+            request.setAttribute("items", items);
             
             RequestDispatcher rd= request.getRequestDispatcher("searchPage.jsp");
             rd.forward(request, response);
         }else{
             RequestDispatcher rd= request.getRequestDispatcher("index.html");
-            
             rd.forward(request, response);
         }
     }
+    
+    private ArrayList<Item> retrieveItems() throws FileNotFoundException{
+        File file = new File("/home/student/Documents/Lab2/src/main/webapp/resources/items.txt");
+        Scanner sc = new Scanner(file);
+        
+        ArrayList<Item> items = new ArrayList<>();
+        
+        while (sc.hasNextLine()) {
+            String[] data = sc.nextLine().toLowerCase().split(" ");
+            
+            Item newItem = new Item(
+                    data[0], data[1], data[2], 
+                    Double.parseDouble(data[3]), 
+                    parseInt(data[4]), 
+                    Boolean.parseBoolean(data[5])
+            );
+            
+            items.add(newItem);
+        }
+        
+        return items;
+    }
+    
     private UserInfo getUserInfo(String username, String password) {
         UserInfo userInfo = new UserInfo(username, password);
         return userInfo;

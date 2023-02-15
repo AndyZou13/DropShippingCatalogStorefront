@@ -12,15 +12,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Search Page</title>
+        <title>Store Page</title>
     </head>
     
     <%
         ArrayList<Item> cart = (ArrayList)request.getAttribute("cart");
-        ArrayList<Item> items = new ArrayList<Item>();
-        items.add(new Item("testItem", "176839402934", "Canada", 15.0, 10, true));
-        items.add(new Item("testItem", "176839402934", "America", 15.0, 10, true));
-        items.add(new Item("testItem", "176839402934", "Mexico", 15.0, 10, true));
+        ArrayList<Item> items = (ArrayList)request.getAttribute("items");
     %>
     
     <body>
@@ -33,10 +30,13 @@
                     <th> Location </th>
                     <th> Price </th>
                     <th> Quantity </th>
+                    <th> Add To Cart </th>
                 </tr>
                 
                 <% 
-                    for(Item item : items){ %>
+                    for(int i = 0; i < items.size(); i++){ 
+                    Item item = items.get(i);
+                %>
                 <tr>
                     
                 <td> <%= item.getItemName() %> </td>
@@ -46,14 +46,18 @@
                 <td> <%= item.getQuantity() %> </td>
                 
                 <% if (item.isAvailable()){ %>
-                    <td> <input type="submit" value="+"></td>
-                <%} else { %>
-                    <td> "The item is not available for purchase" </td>
+                    <% if(cart.contains(item)){ %>
+                        <td> <input type="checkbox" name="item" value="<%=item.getUPC()%>" checked></td>
+                    <% }else{ %>
+                        <td> <input type="checkbox" name="item" value="<%=item.getUPC()%>"></td>
+                <%}} else { %>
+                    <td> Not Available </td>
                 <% }} %>
                 
                 </tr>
             </table>
-                
+            
+            <input type="submit" value="View Cart">
         </form>
     </body>
 </html>

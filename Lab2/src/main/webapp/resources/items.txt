@@ -1,0 +1,4 @@
+mouse 1859384029 Canada 15.0 10 true
+laptop 6729583940 USA 25.0 20 true
+keyboard 2849305819 China 50.0 1 true
+wire 6729583049 Australia 36.0 15 false

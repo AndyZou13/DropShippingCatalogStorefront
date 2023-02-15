@@ -12,17 +12,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Store Page</title>
+        <title>Cart View</title>
     </head>
     
     <%
         ArrayList<Item> cart = (ArrayList)request.getAttribute("cart");
-        ArrayList<Item> items = (ArrayList)request.getAttribute("items");
     %>
     
     <body>
         <center><h3> Items </h3></center>
-        <form action="AddToCart" method="post">
+        <form action="ReturnToStore" method="post">
             <table border="2" align="center" cellpadding="5" cellspacing="5">
                 <tr>
                     <th> Item Name </th>
@@ -30,12 +29,12 @@
                     <th> Location </th>
                     <th> Price </th>
                     <th> Quantity </th>
-                    <th> Add To Cart </th>
+                    <th> Keep In Cart </th>
                 </tr>
                 
                 <% 
-                    for(int i = 0; i < items.size(); i++){ 
-                    Item item = items.get(i);
+                    for(int i = 0; i < cart.size(); i++){ 
+                    Item item = cart.get(i);
                 %>
                 <tr>
                     
@@ -46,18 +45,15 @@
                 <td> <%= item.getQuantity() %> </td>
                 
                 <% if (item.isAvailable()){ %>
-                    <% if(cart.contains(item)){ %>
-                        <td> <input type="checkbox" name="item" value="<%=item.getUPC()%>" checked></td>
-                    <% }else{ %>
-                        <td> <input type="checkbox" name="item" value="<%=item.getUPC()%>"></td>
-                <%}} else { %>
+                    <td> <input type="checkbox" name="item" value="<%=item.getUPC()%>" checked></td>
+                <%} else { %>
                     <td> Not Available </td>
                 <% }} %>
                 
                 </tr>
             </table>
             
-            <input type="submit" value="View Cart">
+            <input type="submit" value="Return To Store">
         </form>
     </body>
 </html>

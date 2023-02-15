@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author student
  */
-@WebServlet(name = "AddToCart", urlPatterns = {"/AddToCart"})
-public class AddToCart extends HttpServlet {
+@WebServlet(name = "ReturnToStore", urlPatterns = {"/ReturnToStore"})
+public class ReturnToStore extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,15 +37,19 @@ public class AddToCart extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         
+        // load items from storage
+        ArrayList<Item> items = retrieveItems();
+        request.setAttribute("items", items);
+        
+        // pass cart backwards
+        String[] cartUPCs = request.getParameterValues("item");
         ArrayList<Item> cart = new ArrayList();
-        String[] itemsToAdd = request.getParameterValues("item");
         
-        if(itemsToAdd != null){
-            ArrayList<Item> items = retrieveItems();
-
-            for(int i = 0; i < itemsToAdd.length; i++){
-                String UPC = itemsToAdd[i];
+        if(cartUPCs != null){
+            for(int i = 0; i < cartUPCs.length; i++){
+                String UPC = cartUPCs[i];
 
                 for(int j = 0; j < items.size(); j++){
                     if(items.get(j).getUPC().equals(UPC))
@@ -53,10 +57,12 @@ public class AddToCart extends HttpServlet {
                 }
             }
         }
+        
+        System.out.println(cart.size());
         request.setAttribute("cart", cart);
         
-        RequestDispatcher rd= request.getRequestDispatcher("cartView.jsp");
-        rd.forward(request, response);
+        RequestDispatcher rd= request.getRequestDispatcher("searchPage.jsp");
+            rd.forward(request, response);
     }
     
     private ArrayList<Item> retrieveItems() throws FileNotFoundException{
@@ -108,8 +114,6 @@ public class AddToCart extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
-        
     }
 
     /**

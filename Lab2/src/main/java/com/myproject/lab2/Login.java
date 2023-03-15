@@ -5,6 +5,9 @@
  */
 package com.myproject.lab2;
 
+import Persistence.PRODUCT_CRUD;
+import Persistence.SessionInfo;
+import Persistence.USER_CRUD;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -43,65 +46,28 @@ public class Login extends HttpServlet {
         
         String username = (String) request.getParameter("username");
         String password = (String) request.getParameter("password");
+
+        // look up user info based on username and password
+        UserInfo userInfo = USER_CRUD.read(username, password);
         
-        File file = new File("/home/student/Documents/Lab2/src/main/webapp/resources/logins.txt");
-        Scanner sc = new Scanner(file);
-        
-        boolean match = false;
-        while (sc.hasNextLine()) {
-            String[] temp = sc.nextLine().toLowerCase().split(" ");
+        if(userInfo == null){
+            System.out.println("no match");
             
-            if(temp[0].equals(username) && temp[1].equals(password)){
-                match = true;
-                break;
-            }
-        }
-        
-        if (match) {
-            // look up user info based on username and password
-            UserInfo userInfo = getUserInfo(username, password);
+            RequestDispatcher rd= request.getRequestDispatcher("index.html");
+            rd.forward(request, response);
+        }else{
             
-            request.getSession().setAttribute("username", username);
-            request.setAttribute("cart", userInfo.getCart());
+            SessionInfo.userInfo = userInfo;
             
             // load items from storage
-            ArrayList<Item> items = retrieveItems();
-            request.setAttribute("items", items);
+            ArrayList<Item> items = PRODUCT_CRUD.readAll();
+            SessionInfo.items = items;
             
             RequestDispatcher rd= request.getRequestDispatcher("searchPage.jsp");
             rd.forward(request, response);
-        }else{
-            RequestDispatcher rd= request.getRequestDispatcher("index.html");
-            rd.forward(request, response);
         }
     }
     
-    private ArrayList<Item> retrieveItems() throws FileNotFoundException{
-        File file = new File("/home/student/Documents/Lab2/src/main/webapp/resources/items.txt");
-        Scanner sc = new Scanner(file);
-        
-        ArrayList<Item> items = new ArrayList<>();
-        
-        while (sc.hasNextLine()) {
-            String[] data = sc.nextLine().toLowerCase().split(" ");
-            
-            Item newItem = new Item(
-                    data[0], data[1], data[2], 
-                    Double.parseDouble(data[3]), 
-                    parseInt(data[4]), 
-                    Boolean.parseBoolean(data[5])
-            );
-            
-            items.add(newItem);
-        }
-        
-        return items;
-    }
-    
-    private UserInfo getUserInfo(String username, String password) {
-        UserInfo userInfo = new UserInfo(username, password);
-        return userInfo;
-    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

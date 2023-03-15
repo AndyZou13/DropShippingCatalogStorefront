@@ -1,1 +1,11 @@
+com/myproject/lab2/ViewCart.class
+Persistence/SessionInfo.class
+com/myproject/lab2/UserInfo.class
+Persistence/PRODUCT_CRUD.class
+com/myproject/lab2/UpdateCart.class
+com/myproject/lab2/Item.class
+Persistence/DBConnection.class
+Persistence/USER_CRUD.class
 com/myproject/lab2/Login.class
+com/myproject/lab2/ReturnToStore.class
+Persistence/CART_CRUD.class

@@ -5,6 +5,8 @@
  */
 package com.myproject.lab2;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author student
@@ -16,13 +18,15 @@ public class Item {
     double price;
     int quantity;
     boolean available;
+    String tags;
     
-    public Item (String itemName, String UPC, String location, double price, int quantity, boolean available) {
+    public Item (String itemName, String UPC, String location, double price, int quantity, String tags, boolean available) {
         this.itemName = itemName;
         this.UPC = UPC;
         this.location = location;
         this.price = price;
         this.quantity = quantity;
+        this.tags = tags;
         this.available = available;
     }
     
@@ -74,7 +78,23 @@ public class Item {
         this.available = available;
     }
     
-    
-    
-    
+    @Override
+    public boolean equals(Object o) {
+        // If the object is compared with itself then return true 
+        if (o == this) {
+            return true;
+        }
+ 
+        /* Check if o is an instance of Complex or not
+          "null instanceof [type]" also returns false */
+        if (!(o instanceof Item)) {
+            return false;
+        }
+         
+        // typecast o to Complex so that we can compare data members
+        Item c = (Item) o;
+         
+        // Compare the data members and return accordingly
+        return UPC.equals(c.UPC);
+    }
 }

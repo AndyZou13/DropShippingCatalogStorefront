@@ -5,6 +5,8 @@
  */
 package com.myproject.lab2;
 
+import Persistence.PRODUCT_CRUD;
+import Persistence.SessionInfo;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,52 +41,8 @@ public class ReturnToStore extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        // load items from storage
-        ArrayList<Item> items = retrieveItems();
-        request.setAttribute("items", items);
-        
-        // pass cart backwards
-        String[] cartUPCs = request.getParameterValues("item");
-        ArrayList<Item> cart = new ArrayList();
-        
-        if(cartUPCs != null){
-            for(int i = 0; i < cartUPCs.length; i++){
-                String UPC = cartUPCs[i];
-
-                for(int j = 0; j < items.size(); j++){
-                    if(items.get(j).getUPC().equals(UPC))
-                        cart.add(items.get(j));
-                }
-            }
-        }
-        
-        System.out.println(cart.size());
-        request.setAttribute("cart", cart);
-        
         RequestDispatcher rd= request.getRequestDispatcher("searchPage.jsp");
             rd.forward(request, response);
-    }
-    
-    private ArrayList<Item> retrieveItems() throws FileNotFoundException{
-        File file = new File("/home/student/Documents/Lab2/src/main/webapp/resources/items.txt");
-        Scanner sc = new Scanner(file);
-        
-        ArrayList<Item> items = new ArrayList<>();
-        
-        while (sc.hasNextLine()) {
-            String[] data = sc.nextLine().toLowerCase().split(" ");
-            
-            Item newItem = new Item(
-                    data[0], data[1], data[2], 
-                    Double.parseDouble(data[3]), 
-                    parseInt(data[4]), 
-                    Boolean.parseBoolean(data[5])
-            );
-            
-            items.add(newItem);
-        }
-        
-        return items;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

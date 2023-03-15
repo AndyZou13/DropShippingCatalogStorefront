@@ -4,6 +4,7 @@
     Author     : student
 --%>
 
+<%@page import="Persistence.SessionInfo"%>
 <%@page import="com.myproject.lab2.Item"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.ArrayList"%>
@@ -16,13 +17,21 @@
     </head>
     
     <%
-        ArrayList<Item> cart = (ArrayList)request.getAttribute("cart");
-        ArrayList<Item> items = (ArrayList)request.getAttribute("items");
+        ArrayList<Item> cart = SessionInfo.userInfo.getCart();
+        ArrayList<Item> items = SessionInfo.items;
     %>
     
     <body>
+        <div style="display:flex; flex-direction:row; justify-content: center; align-items:center;gap:5rem;"> 
+            <p> Welcome, <%= SessionInfo.userInfo.getFname() %> </p>
+            
+            <form action="Logout" method="post">
+                <input type="submit" value="Log out">
+            </form>
+        </div>
+        
         <center><h3> Items </h3></center>
-        <form action="AddToCart" method="post">
+        
             <table border="2" align="center" cellpadding="5" cellspacing="5">
                 <tr>
                     <th> Item Name </th>
@@ -45,19 +54,27 @@
                 <td> <%= item.getPrice() %> </td>
                 <td> <%= item.getQuantity() %> </td>
                 
-                <% if (item.isAvailable()){ %>
-                    <% if(cart.contains(item)){ %>
-                        <td> <input type="checkbox" name="item" value="<%=item.getUPC()%>" checked></td>
-                    <% }else{ %>
-                        <td> <input type="checkbox" name="item" value="<%=item.getUPC()%>"></td>
-                <%}} else { %>
-                    <td> Not Available </td>
-                <% }} %>
-                
+                <form action="UpdateCart" method="post">
+                    <center>
+                    <% if (item.isAvailable()){ %>
+                        <% if(cart.contains(item)){ %>
+                            <td> <input type="submit" name=<%=item.getUPC()%> value="Remove"/></td>
+                        <% }else{ %>
+                            <td> <input type="submit" name=<%=item.getUPC()%> value="Add"/></td>
+                    <%}} else { %>
+                        <td> Not Available </td>
+                    <% }} %>
+                    </center>
+                </form>
                 </tr>
             </table>
             
-            <input type="submit" value="View Cart">
-        </form>
+            <br>
+            
+            <center>
+                <form action="ViewCart" method="post">
+                    <input type="submit" value="View Cart">
+                </form>
+            </center>
     </body>
 </html>

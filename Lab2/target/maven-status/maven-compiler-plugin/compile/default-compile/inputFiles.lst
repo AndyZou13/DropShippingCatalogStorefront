@@ -1,3 +1,11 @@
+/home/student/Documents/Lab2/src/main/java/com/myproject/lab2/ReturnToStore.java
 /home/student/Documents/Lab2/src/main/java/com/myproject/lab2/Login.java
+/home/student/Documents/Lab2/src/main/java/com/myproject/lab2/UpdateCart.java
+/home/student/Documents/Lab2/src/main/java/Persistence/CART_CRUD.java
+/home/student/Documents/Lab2/src/main/java/Persistence/PRODUCT_CRUD.java
+/home/student/Documents/Lab2/src/main/java/Persistence/USER_CRUD.java
 /home/student/Documents/Lab2/src/main/java/com/myproject/lab2/Item.java
+/home/student/Documents/Lab2/src/main/java/com/myproject/lab2/ViewCart.java
+/home/student/Documents/Lab2/src/main/java/Persistence/DBConnection.java
+/home/student/Documents/Lab2/src/main/java/Persistence/SessionInfo.java
 /home/student/Documents/Lab2/src/main/java/com/myproject/lab2/UserInfo.java

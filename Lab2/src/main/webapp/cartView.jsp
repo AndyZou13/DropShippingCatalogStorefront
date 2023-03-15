@@ -4,6 +4,7 @@
     Author     : student
 --%>
 
+<%@page import="Persistence.SessionInfo"%>
 <%@page import="com.myproject.lab2.Item"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.ArrayList"%>
@@ -16,12 +17,20 @@
     </head>
     
     <%
-        ArrayList<Item> cart = (ArrayList)request.getAttribute("cart");
+        ArrayList<Item> cart = SessionInfo.userInfo.getCart();
     %>
     
     <body>
-        <center><h3> Items </h3></center>
-        <form action="ReturnToStore" method="post">
+        
+        <div style="display:flex; flex-direction:row; justify-content: center; align-items:center;gap:5rem;"> 
+            <p> Welcome, <%= SessionInfo.userInfo.getFname() %> </p>
+            
+            <form action="Logout" method="post">
+                <input type="submit" value="Log out">
+            </form>
+        </div>
+        
+        <center><h3> Cart </h3></center>
             <table border="2" align="center" cellpadding="5" cellspacing="5">
                 <tr>
                     <th> Item Name </th>
@@ -29,7 +38,7 @@
                     <th> Location </th>
                     <th> Price </th>
                     <th> Quantity </th>
-                    <th> Keep In Cart </th>
+                    <th> Add To Cart </th>
                 </tr>
                 
                 <% 
@@ -44,16 +53,24 @@
                 <td> <%= item.getPrice() %> </td>
                 <td> <%= item.getQuantity() %> </td>
                 
-                <% if (item.isAvailable()){ %>
-                    <td> <input type="checkbox" name="item" value="<%=item.getUPC()%>" checked></td>
-                <%} else { %>
-                    <td> Not Available </td>
-                <% }} %>
-                
+                <form action="UpdateCartView" method="post">
+                    <center>
+                    <% if (item.isAvailable()){ %>
+                            <td> <input type="submit" name=<%=item.getUPC()%> value="Remove"/></td>
+                    <%} else { %>
+                        <td> Not Available </td>
+                    <% }} %>
+                    </center>
+                </form>
                 </tr>
             </table>
             
-            <input type="submit" value="Return To Store">
-        </form>
+            <br>
+            
+            <center>
+                <form action="ReturnToStore" method="post">
+                    <input type="submit" value="Return to Search">
+                </form>
+            </center>
     </body>
 </html>
